@@ -18,19 +18,17 @@ jobs:
       - name: Clone PUBG api-assets (upstream)
         run: |
           git clone --depth 1 https://github.com/pubg/api-assets.git upstream
-
+          
       - name: Copy high-res text maps into subset repo
         run: |
           rm -rf Assets
           mkdir -p Assets/Maps
 
           # Copy only *_High_Res.png that are *not* No_Text
-          cd upstream/Assets/Maps
-          find . -maxdepth 1 -type f \
+          find upstream/Assets/Maps -maxdepth 1 -type f \
             -name '*_High_Res.png' ! -name '*No_Text*' \
-            -exec cp {} ../../Assets/Maps/ \;
+            -exec cp {} Assets/Maps/ \;
 
-          cd ../../
 
       - name: Install ImageMagick
         run: |
