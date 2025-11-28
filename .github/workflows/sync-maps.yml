@@ -1,0 +1,70 @@
+name: Sync PUBG maps subset
+
+on:
+  schedule:
+    - cron: "0 4 * * *"    # once per day at 04:00 UTC
+  workflow_dispatch: {}     # manual run
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout subset repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Clone PUBG api-assets (upstream)
+        run: |
+          git clone --depth 1 https://github.com/pubg/api-assets.git upstream
+
+      - name: Copy high-res text maps into subset repo
+        run: |
+          rm -rf Assets
+          mkdir -p Assets/Maps
+
+          # Copy only *_High_Res.png that are *not* No_Text
+          cd upstream/Assets/Maps
+          find . -maxdepth 1 -type f \
+            -name '*_High_Res.png' ! -name '*No_Text*' \
+            -exec cp {} ../../Assets/Maps/ \;
+
+          cd ../../
+
+      - name: Install ImageMagick
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y imagemagick
+
+      - name: Convert PNG maps to JPEG (same resolution, ~90% smaller)
+        run: |
+          cd Assets/Maps
+
+          # Convert each PNG to JPEG at ~80% quality
+          for f in *.png; do
+            [ -f "$f" ] || continue
+            base="${f%.png}"
+            # -strip to remove metadata, keep pixel size the same
+            convert "$f" -strip -quality 80 "${base}.jpg"
+          done
+
+          # Remove original PNGs; we only keep JPEGs in this subset repo
+          rm -f *.png
+
+      - name: Commit and push if there are changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Only care about Assets/, ignore the upstream clone
+          if git status --porcelain Assets | grep .; then
+            echo "Changes detected, committing..."
+            git add Assets
+            git commit -m "Sync maps from pubg/api-assets (JPEG compressed)"
+            git push origin HEAD:main
+          else
+            echo "No changes, nothing to commit."
+          fi
