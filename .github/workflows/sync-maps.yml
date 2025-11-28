@@ -13,7 +13,7 @@ jobs:
       - name: Checkout subset repo
         uses: actions/checkout@v4
         with:
-          persist-credentials: false
+          persist-credentials: true
 
       - name: Clone PUBG api-assets (upstream)
         run: |
