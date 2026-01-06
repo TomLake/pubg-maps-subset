@@ -4,37 +4,37 @@
     {
       "id": "erangel",
       "name": "Erangel",
-      "imagePath": "secret-rooms/maps/erangel.jpg",
+      "imagePath": "secret-rooms/maps/erangel.jpeg",
       "iconName": "Erangel_Main_Low"
     },
     {
       "id": "taego",
       "name": "Taego",
-      "imagePath": "secret-rooms/maps/taego.jpg",
+      "imagePath": "secret-rooms/maps/taego.jpeg",
       "iconName": "Tiger_Main_Low"
     },
     {
       "id": "rondo",
       "name": "Rondo",
-      "imagePath": "secret-rooms/maps/rondo.jpg",
+      "imagePath": "secret-rooms/maps/rondo.jpeg",
       "iconName": "Neon_Main_Low"
     },
     {
       "id": "deston",
       "name": "Deston",
-      "imagePath": "secret-rooms/maps/deston.jpg",
+      "imagePath": "secret-rooms/maps/deston.jpeg",
       "iconName": "Kiki_Main_Low"
     },
     {
       "id": "vikendi",
       "name": "Vikendi",
-      "imagePath": "secret-rooms/maps/vikendi.jpg",
+      "imagePath": "secret-rooms/maps/vikendi.jpeg",
       "iconName": "DihorOtok_Main_Low"
     },
     {
       "id": "paramo",
       "name": "Paramo",
-      "imagePath": "secret-rooms/maps/paramo.jpg",
+      "imagePath": "secret-rooms/maps/paramo.jpeg",
       "iconName": "Chimera_Main_Low"
     }
   ]
